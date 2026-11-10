@@ -1,36 +1,51 @@
 <script>
-  import { Card } from 'noph-ui';
-  import { cubicOut } from 'svelte/easing';
-  import { fade } from 'svelte/transition';
   import DocumentUpload from '#lib/components/DocumentUpload.svelte';
-  import Findings from '#lib/components/Findings.svelte';
+  import BatchResults from '#lib/components/BatchResults.svelte';
   import { analyze } from '#lib/docx/analyze.js';
 
-  let report = $state(null);
+  let results = $state([]);
   let busy = $state(false);
-  let error = $state('');
+  let completed = $state(0);
+  let batch = $state(0);
 
-  async function inspect(file) {
-    if (busy) {
+  async function inspect(files) {
+    if (busy || !files.length) {
       return;
     }
 
     busy = true;
-    report = null;
-    error = '';
+    completed = 0;
+    batch += 1;
+    results = files.map((file, id) => ({
+      id,
+      name: file.name,
+      status: 'queued',
+      report: null,
+      error: '',
+    }));
 
     try {
-      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      for (const [index, file] of files.entries()) {
+        results[index].status = 'reading';
 
-      const [result] = await Promise.all([
-        analyze(file),
-        new Promise((resolve) => setTimeout(resolve, 700)),
-      ]);
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 
-      report = result;
-    } catch {
-      error =
-        'Ezt a fájlt nem sikerült megnyitni. Próbálj egy 20 MB-nál kisebb, nem jelszavas .docx fájlt.';
+        try {
+          const [report] = await Promise.all([
+            analyze(file),
+            new Promise((resolve) => setTimeout(resolve, files.length === 1 ? 700 : 0)),
+          ]);
+
+          results[index].report = report;
+          results[index].status = 'done';
+        } catch {
+          results[index].error =
+            'Ezt a fájlt nem sikerült megnyitni. Ellenőrizd, hogy nem sérült vagy jelszavas-e, és 20 MB-nál kisebb .docx fájl legyen.';
+          results[index].status = 'error';
+        }
+
+        completed += 1;
+      }
     } finally {
       busy = false;
     }
@@ -39,13 +54,8 @@
 
 <main>
   <h1>DOCX-ellenőrző</h1>
-  <DocumentUpload {busy} onfile={inspect} />
-  {#if error}
-    <Card variant="outlined"><p role="alert">{error}</p></Card>
-  {/if}
-  {#if report}<div in:fade={{ duration: 350, easing: cubicOut }}>
-      <Findings {report} />
-    </div>{/if}
+  <DocumentUpload {busy} {completed} total={results.length} onfiles={inspect} />
+  {#if results.length}{#key batch}<BatchResults {results} {busy} {completed} />{/key}{/if}
 </main>
 
 <footer>

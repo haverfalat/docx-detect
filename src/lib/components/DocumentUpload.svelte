@@ -2,7 +2,7 @@
   import { Button, LinearProgress, LoadingIndicator } from 'noph-ui';
   import { Icon } from 'noph-ui/icons';
 
-  let { busy, onfile } = $props();
+  let { busy, completed = 0, total = 0, onfiles } = $props();
   let input;
 
   let dragDepth = $state(0);
@@ -10,12 +10,12 @@
   const dragging = $derived(dragDepth > 0 && !busy);
 
   function select() {
-    const file = input.files?.[0];
+    const files = Array.from(input.files || []);
 
     input.value = '';
 
-    if (file && !busy) {
-      onfile(file);
+    if (files.length && !busy) {
+      onfiles(files);
     }
   }
 
@@ -46,10 +46,10 @@
 
     dragDepth = 0;
 
-    const file = event.dataTransfer?.files[0];
+    const files = Array.from(event.dataTransfer?.files || []);
 
-    if (file && !busy) {
-      onfile(file);
+    if (files.length && !busy) {
+      onfiles(files);
     }
   }
 </script>
@@ -67,7 +67,15 @@
   <svg class="drop-border" aria-hidden="true">
     <rect width="100%" height="100%" rx="16" />
   </svg>
-  <input bind:this={input} type="file" accept=".docx" onchange={select} disabled={busy} hidden />
+  <input
+    bind:this={input}
+    type="file"
+    accept=".docx"
+    multiple
+    onchange={select}
+    disabled={busy}
+    hidden
+  />
   <div class="upload-icon">
     {#if busy}
       <LoadingIndicator --np-loading-indicator-size="36px" aria-label="A dokumentum beolvasása" />
@@ -77,21 +85,21 @@
   </div>
   <h2 role={busy ? 'status' : undefined}>
     {busy
-      ? 'Átnézzük a dokumentumot…'
+      ? `Ellenőrzés: ${Math.min(completed + 1, total)}/${total}`
       : dragging
         ? 'Engedd el, és megnézzük'
-        : 'Húzz ide egy Word-dokumentumot'}
+        : 'Húzz ide Word-dokumentumokat'}
   </h2>
   <div>
     <Button onclick={() => input.click()} disabled={busy} variant="filled"
-      >{#snippet start()}<Icon>upload</Icon>{/snippet}Fájl kiválasztása</Button
+      >{#snippet start()}<Icon>upload</Icon>{/snippet}Fájlok kiválasztása</Button
     >
   </div>
   <div class="upload-footer">
     {#if busy}
-      <LinearProgress indeterminate aria-label="A dokumentum ellenőrzése folyamatban" />
+      <LinearProgress value={completed} max={total} aria-label="A fájlok ellenőrzésének haladása" />
     {:else}
-      <p class="upload-hint">.docx fájl, legfeljebb 20 MB. A fájl a gépeden marad.</p>
+      <p class="upload-hint">Több .docx is jöhet, fájlonként max. 20 MB. Minden a gépeden marad.</p>
     {/if}
   </div>
 </section>
@@ -145,7 +153,7 @@
     color: var(--np-color-primary);
   }
   .upload-footer {
-    height: 24px;
+    min-height: 36px;
     display: flex;
     flex-direction: column;
     justify-content: center;

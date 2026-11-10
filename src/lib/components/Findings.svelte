@@ -11,27 +11,29 @@
     Weak: 'Gyenge jel',
   };
 
-  let { report } = $props();
+  let { report, showOverview = true } = $props();
 
   const overview = $derived(getOverview(report.findings));
 </script>
 
-<section class="findings stack" aria-label="Az ellenőrzés eredménye" aria-live="polite">
-  <div class="assessment" data-tone={overview.tone}>
-    <Card variant="filled">
-      <div class="overview">
-        <div class="overview-icon">
-          <Icon --np-icon-size="28px">{overviewIcons[overview.tone]}</Icon>
+<section class="findings stack" aria-label="Az ellenőrzés eredménye">
+  {#if showOverview}
+    <div class="assessment" data-tone={overview.tone}>
+      <Card variant="filled">
+        <div class="overview">
+          <div class="overview-icon">
+            <Icon --np-icon-size="28px">{overviewIcons[overview.tone]}</Icon>
+          </div>
+          <h2 class="assessment-title">{overview.title}</h2>
+          <p>{overview.detail}</p>
         </div>
-        <h2 class="assessment-title">{overview.title}</h2>
-        <p>{overview.detail}</p>
-      </div>
-    </Card>
-  </div>
-  <div class="findings-heading">
-    <h2>Találatok</h2>
-    <p>{report.name} ({report.findings.length} találat)</p>
-  </div>
+      </Card>
+    </div>
+    <div class="findings-heading">
+      <h2>Találatok</h2>
+      <p>{report.name} ({report.findings.length} találat)</p>
+    </div>
+  {/if}
   {#each report.findings as finding}
     <Card variant="outlined">
       <article class="finding-content stack">
@@ -47,6 +49,8 @@
         <p class="evidence-source">{finding.evidence}</p>
       </article>
     </Card>
+  {:else}
+    {#if !showOverview}<p class="upload-hint">Nem találtunk generálásra utaló nyomot.</p>{/if}
   {/each}
 </section>
 

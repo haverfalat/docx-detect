@@ -10,7 +10,7 @@ export function getOverview(findings) {
   if (findings.filter((finding) => finding.strength === 'Moderate').length >= 2) {
     return {
       tone: 'amber',
-      title: 'Határeset — lehet, hogy programmal készült',
+      title: 'Határeset, lehet, hogy programmal készült',
       detail: 'Több jel is automatikus készítésre utal, de ezekből még nem mondanánk biztosat.',
     };
   }
@@ -18,7 +18,7 @@ export function getOverview(findings) {
   if (findings.length) {
     return {
       tone: 'amber',
-      title: 'Határeset — ebből még nem derül ki',
+      title: 'Határeset, ebből még nem derül ki',
       detail: 'Találtunk pár jelet, de ezek kézzel készített dokumentumokban is előfordulnak.',
     };
   }
