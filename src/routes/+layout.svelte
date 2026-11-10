@@ -1,4 +1,5 @@
 <script>
+  import 'noph-ui/defaultTheme';
   import '../app.css';
   let { children } = $props();
 </script>

@@ -25,9 +25,7 @@
     "vite": "^8.3.0"
   },
   "dependencies": {
-    "@ktibow/iconset-material-symbols": "^0.0.1764827375",
     "jszip": "^3.10.2",
-    "m3-svelte": "^7.2.1",
-    "vite-plugin-functions-mixins": "^0.4.1"
+    "noph-ui": "^0.53.2"
   }
 }

@@ -1,7 +1,6 @@
 <script>
-  import { Button, Icon, LinearProgressEstimate, LoadingIndicator } from 'm3-svelte';
-  import upload from '@ktibow/iconset-material-symbols/upload';
-  import document from '@ktibow/iconset-material-symbols/description-outline';
+  import { Button, LinearProgress, LoadingIndicator } from 'noph-ui';
+  import { Icon } from 'noph-ui/icons';
 
   let { busy, onfile } = $props();
   let input;
@@ -9,16 +8,6 @@
   let dragDepth = $state(0);
 
   const dragging = $derived(dragDepth > 0 && !busy);
-
-  function startLoading(node) {
-    const frame = requestAnimationFrame(() => {
-      node.querySelectorAll('animate, animateTransform').forEach((animation) => {
-        animation.beginElement();
-      });
-    });
-
-    return { destroy: () => cancelAnimationFrame(frame) };
-  }
 
   function select() {
     const file = input.files?.[0];
@@ -81,11 +70,9 @@
   <input bind:this={input} type="file" accept=".docx" onchange={select} disabled={busy} hidden />
   <div class="upload-icon">
     {#if busy}
-      <div use:startLoading>
-        <LoadingIndicator size={36} center={false} aria-label="A dokumentum beolvasása" />
-      </div>
+      <LoadingIndicator --np-loading-indicator-size="36px" aria-label="A dokumentum beolvasása" />
     {:else}
-      <Icon icon={document} size={36} />
+      <Icon --np-icon-size="36px">description</Icon>
     {/if}
   </div>
   <h2 role={busy ? 'status' : undefined}>
@@ -96,13 +83,13 @@
         : 'Húzz ide egy Word-dokumentumot'}
   </h2>
   <div>
-    <Button onclick={() => input.click()} disabled={busy} iconType="left"
-      ><Icon icon={upload} />Fájl kiválasztása</Button
+    <Button onclick={() => input.click()} disabled={busy} variant="filled"
+      >{#snippet start()}<Icon>upload</Icon>{/snippet}Fájl kiválasztása</Button
     >
   </div>
   <div class="upload-footer">
     {#if busy}
-      <LinearProgressEstimate sToHalfway={0.8} aria-label="A dokumentum ellenőrzése folyamatban" />
+      <LinearProgress indeterminate aria-label="A dokumentum ellenőrzése folyamatban" />
     {:else}
       <p class="upload-hint">.docx fájl, legfeljebb 20 MB. A fájl a gépeden marad.</p>
     {/if}
@@ -116,8 +103,8 @@
     gap: 16px;
     padding: 28px 24px;
     border: 2px solid transparent;
-    border-radius: var(--m3-shape-large);
-    background: var(--m3c-surface);
+    border-radius: var(--np-shape-corner-large);
+    background: var(--np-color-surface);
     transition: background-color 200ms;
   }
   .drop-border {
@@ -127,7 +114,7 @@
     height: calc(100% + 2px);
     overflow: visible;
     pointer-events: none;
-    color: var(--m3c-outline-variant);
+    color: var(--np-color-outline-variant);
     transition: color 200ms;
   }
   .drop-border rect {
@@ -137,7 +124,7 @@
     stroke-dasharray: 8 6;
   }
   .dragging .drop-border {
-    color: var(--m3c-primary);
+    color: var(--np-color-primary);
   }
   .dragging rect {
     animation: border-march 1s linear infinite;
@@ -148,14 +135,14 @@
     }
   }
   .dragging {
-    background: var(--m3c-primary-container-subtle);
+    background: var(--np-color-secondary-container);
   }
   .upload-icon {
     height: 48px;
     align-items: center;
     display: flex;
     justify-content: center;
-    color: var(--m3c-primary);
+    color: var(--np-color-primary);
   }
   .upload-footer {
     height: 24px;

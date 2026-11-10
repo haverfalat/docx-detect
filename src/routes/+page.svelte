@@ -1,5 +1,6 @@
 <script>
-  import { Card, easeEmphasized } from 'm3-svelte';
+  import { Card } from 'noph-ui';
+  import { cubicOut } from 'svelte/easing';
   import { fade } from 'svelte/transition';
   import DocumentUpload from '#lib/components/DocumentUpload.svelte';
   import Findings from '#lib/components/Findings.svelte';
@@ -42,7 +43,7 @@
   {#if error}
     <Card variant="outlined"><p role="alert">{error}</p></Card>
   {/if}
-  {#if report}<div in:fade={{ duration: 350, easing: easeEmphasized }}>
+  {#if report}<div in:fade={{ duration: 350, easing: cubicOut }}>
       <Findings {report} />
     </div>{/if}
 </main>

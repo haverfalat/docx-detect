@@ -1,11 +1,9 @@
 <script>
-  import { Card, Icon } from 'm3-svelte';
-  import check from '@ktibow/iconset-material-symbols/check-circle-outline';
-  import uncertain from '@ktibow/iconset-material-symbols/warning-rounded';
-  import alert from '@ktibow/iconset-material-symbols/error-outline';
+  import { Card } from 'noph-ui';
+  import { Icon } from 'noph-ui/icons';
   import { getOverview } from '#lib/docx/overview.js';
 
-  const overviewIcons = { green: check, amber: uncertain, rose: alert };
+  const overviewIcons = { green: 'check_circle', amber: 'warning', rose: 'error' };
 
   const strengthLabels = {
     Strong: 'Erős jel',
@@ -23,7 +21,7 @@
     <Card variant="filled">
       <div class="overview">
         <div class="overview-icon">
-          <Icon icon={overviewIcons[overview.tone]} size={28} />
+          <Icon --np-icon-size="28px">{overviewIcons[overview.tone]}</Icon>
         </div>
         <h2 class="assessment-title">{overview.title}</h2>
         <p>{overview.detail}</p>
@@ -54,8 +52,8 @@
 
 <style>
   .assessment {
-    --m3c-surface-container-highest: var(--assessment-background);
-    --m3c-primary: var(--assessment-color);
+    --np-filled-card-container-color: var(--assessment-background);
+    --np-color-primary: var(--assessment-color);
   }
   .assessment[data-tone='green'] {
     --assessment-background: light-dark(#e5efe4, #1c3023);
