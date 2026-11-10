@@ -1,0 +1,153 @@
+@import 'm3-svelte/etc/styles.css';
+@import 'm3-svelte/etc/recommended-styles.css';
+@function --m3-density(--size) {
+  result: var(--size);
+}
+:root {
+  color-scheme: light dark;
+}
+@layer tokens {
+  :root {
+    --m3c-surface: light-dark(#fff8f8, #130d0e);
+    --m3c-surface-container-lowest: light-dark(#fff, #000);
+    --m3c-surface-container-low: light-dark(#fff0f2, #191113);
+    --m3c-surface-container: light-dark(#fce9ed, #21171a);
+    --m3c-surface-container-high: light-dark(#f7e3e7, #271d20);
+    --m3c-surface-container-highest: light-dark(#f3dde2, #2f2226);
+    --m3c-on-surface: light-dark(#3c2f32, #f6e0e4);
+    --m3c-on-surface-variant: light-dark(#6b5b5f, #baa6aa);
+    --m3c-outline: light-dark(#88767a, #827175);
+    --m3c-outline-variant: light-dark(#c1adb1, #534448);
+    --m3c-inverse-surface: light-dark(#130d0e, #fff8f8);
+    --m3c-inverse-on-surface: light-dark(#a69a9c, #5c5355);
+    --m3c-primary: light-dark(#884d60, #f3b6c7);
+    --m3c-on-primary: light-dark(#fff7f7, #5e3341);
+    --m3c-primary-container: light-dark(#f9afc5, #734553);
+    --m3c-on-primary-container: light-dark(#622d40, #ffdae3);
+    --m3c-inverse-primary: light-dark(#f9afc5, #815160);
+    --m3c-secondary: light-dark(#75575f, #e3bdc6);
+    --m3c-on-secondary: light-dark(#fff7f7, #533941);
+    --m3c-secondary-container: light-dark(#ffd9e2, #4e343c);
+    --m3c-on-secondary-container: light-dark(#664a52, #dbb6bf);
+    --m3c-tertiary: light-dark(#71557b, #fae0ff);
+    --m3c-on-tertiary: light-dark(#fff7fc, #674b71);
+    --m3c-tertiary-container: #f2cefc;
+    --m3c-on-tertiary-container: #5e4268;
+    --m3c-error: light-dark(#a8364b, #f97386);
+    --m3c-on-error: light-dark(#fff7f7, #490013);
+    --m3c-error-container: light-dark(#f97386, #871c34);
+    --m3c-on-error-container: light-dark(#6e0523, #ff97a3);
+    --m3c-shadow: #000;
+    --m3c-scrim: #000;
+    --m3c-on-on-primary: light-dark(#884d60, #f2b6c7);
+    --m3c-primary-container-subtle: light-dark(#ffcdda, #471f2d);
+    --m3c-on-primary-container-subtle: light-dark(#733b4e, #d59bac);
+    --m3c-secondary-container-subtle: light-dark(#f7d0da, #3d252d);
+    --m3c-on-secondary-container-subtle: light-dark(#61454d, #c6a2ab);
+    --m3c-tertiary-container-subtle: light-dark(#f2cefc, #3b2245);
+    --m3c-on-tertiary-container-subtle: light-dark(#5e4268, #c1a0cb);
+    --m3c-error-container-subtle: light-dark(#ffced2, #5f001c);
+    --m3c-on-error-container-subtle: light-dark(#8f2339, #ff8796);
+  }
+}
+
+:root {
+  --m3-font: system-ui, sans-serif;
+  @apply --m3-body-large;
+  box-sizing: border-box;
+  background: var(--m3c-surface);
+  color: var(--m3c-on-surface);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+main {
+  width: min(100%, 720px);
+  margin-inline: auto;
+  padding: clamp(40px, 12vh, 112px) 24px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+h1 {
+  @apply --m3-headline-large;
+  margin: 0;
+}
+
+h2 {
+  @apply --m3-title-large;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  color: var(--m3c-on-surface-variant);
+  overflow-wrap: anywhere;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.upload-hint {
+  @apply --m3-body-small;
+}
+
+.findings {
+  gap: 12px;
+}
+.findings-heading {
+  display: grid;
+  gap: 6px;
+  margin-block: 8px;
+}
+.findings-heading p {
+  @apply --m3-body-small;
+}
+.finding-content {
+  gap: 10px;
+  padding: 4px;
+}
+.finding-content h3 {
+  @apply --m3-title-medium;
+  margin: 0;
+}
+.finding-content > p {
+  @apply --m3-body-medium;
+}
+.evidence-strength {
+  @apply --m3-label-medium;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--m3c-secondary);
+}
+.evidence-strength.strong {
+  color: var(--m3c-primary);
+}
+.evidence-strength.moderate {
+  color: var(--m3c-tertiary);
+}
+.finding-content .evidence-source {
+  @apply --m3-label-small;
+  color: var(--m3c-primary);
+}
+.overview {
+  display: grid;
+  gap: 12px;
+  padding: 8px;
+}
+.overview-icon {
+  display: flex;
+  justify-content: center;
+  color: var(--m3c-primary);
+}

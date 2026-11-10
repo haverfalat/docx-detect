@@ -1,0 +1,8 @@
+services:
+  docx-detect:
+    build: .
+    image: docx-detect:local
+    container_name: docx-detect
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3087:80"

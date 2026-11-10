@@ -1,0 +1,9 @@
+node_modules
+.svelte-kit
+build
+.git
+.vscode
+sample-docx
+.DS_Store
+.env
+.env.*
