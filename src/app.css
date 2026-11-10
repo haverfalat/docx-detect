@@ -151,3 +151,13 @@ p {
   justify-content: center;
   color: var(--m3c-primary);
 }
+
+footer {
+  @apply --m3-body-small;
+  padding: 24px;
+  text-align: center;
+}
+
+footer a {
+  color: var(--m3c-primary);
+}

@@ -46,3 +46,7 @@
       <Findings {report} />
     </div>{/if}
 </main>
+
+<footer>
+  <a href="https://github.com/haverfalat/docx-detect" target="_blank" rel="noreferrer">Forráskód</a>
+</footer>
