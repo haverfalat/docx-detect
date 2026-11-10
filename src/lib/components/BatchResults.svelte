@@ -68,7 +68,6 @@
       <p role="status">
         {completed}/{results.length} fájl kész{failed ? `, ${failed} nem olvasható` : ''}
       </p>
-      {#if !busy}<p class="upload-hint">Erősebb jelek elöl.</p>{/if}
     </div>
     <div class="filters">
       <TextField label="Keresés fájlnév alapján" type="search" bind:value={query} />
